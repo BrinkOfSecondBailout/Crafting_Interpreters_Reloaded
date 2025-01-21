@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lox.TokenType.*;
+import static lox.TokenType.*; // Add this import
 
 class Scanner {
     private final String source;
