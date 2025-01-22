@@ -1,6 +1,7 @@
 #ifndef clox_chunk_h
 #define clox_chunk_h
 
+#include "value.h"
 #include "common.h"
 
 typedef enum {
@@ -11,6 +12,7 @@ typedef struct {
     int count;
     int capacity;
     uint8_t* code;
+    ValueArray constants;
 } Chunk;
 
 void initChunk(Chunk *chunk);
