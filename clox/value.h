@@ -3,7 +3,6 @@
 
 #include "common.h"
 
-typedef double Value;
 
 typedef enum {
     VAL_BOOL,
@@ -39,6 +38,7 @@ typedef struct {
     Value* values;
 } ValueArray;
 
+bool valuesEqual(Value a, Value b);
 void initValueArray(ValueArray *array);
 void writeValueArray(ValueArray *array, Value value);
 void freeValueArray(ValueArray *array);
