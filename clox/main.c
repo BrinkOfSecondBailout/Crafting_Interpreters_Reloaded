@@ -19,7 +19,7 @@ static char *readFile(const char *path) {
 
     char *buffer = (char *)malloc(fileSize + 1);
     if (buffer == NULL) {
-        fprint(stderr, "Not enough memory to read \'%s\'.\n", path);
+        fprintf(stderr, "Not enough memory to read \'%s\'.\n", path);
         exit(74);
     }
     size_t bytesRead = fread(buffer, sizeof(char), fileSize, file);
