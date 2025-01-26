@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include "common.h"
 #include "vm.h"
-#include "debug.h"
-#include "compiler.h"
-#include "value.h"
-#include <stdarg.h>
+
 
 VM vm;
 
