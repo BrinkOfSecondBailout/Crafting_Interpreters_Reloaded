@@ -1,7 +1,4 @@
 #ifndef clox_scanner_h
-
-#include "common.h"
-
 #define clox_scanner_h
 
 typedef enum
