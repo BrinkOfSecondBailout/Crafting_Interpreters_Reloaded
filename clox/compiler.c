@@ -137,6 +137,8 @@ static void endCompiler() {
     #endif
 }
 
+static uint8_t identifierConstant(Token *name);
+static uint8_t makeConstant(Value value);
 static void expression();
 static void statement();
 static void declaration();

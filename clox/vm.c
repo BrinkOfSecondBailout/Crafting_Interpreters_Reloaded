@@ -31,6 +31,7 @@ static void runtimeError(const char *format, ...) {
 void initVM() {
     resetStack();
     vm.objects = NULL;
+    initTable(&vm.globals);
     initTable(&vm.strings);
 }
 
@@ -84,6 +85,19 @@ Value pop() {
     return *vm.stackTop;
 }
 
+void printGlobalsTable() {
+    printf("Globals Table:\n");
+    for (int i = 0; i < vm.globals.capacity; i++)
+    {
+        Entry *entry = &vm.globals.entries[i];
+        if (entry->key != NULL) {
+            printf("  %s = ", entry->key->chars);
+            printValue(entry->value);
+            printf("\n");
+        }
+    }
+}
+
 static InterpretResult run() {
     #define READ_BYTE() (*vm.ip++)
     #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
@@ -122,7 +136,9 @@ static InterpretResult run() {
             case OP_TRUE: push(BOOL_VAL(true)); break;
             case OP_FALSE: push(BOOL_VAL(false)); break;
             case OP_POP: pop(); break;
+            
             case OP_GET_GLOBAL: {
+                // printGlobalsTable();
                 ObjString *name = READ_STRING();
                 Value value;
                 if (!tableGet(&vm.globals, name, &value)) {
@@ -132,12 +148,14 @@ static InterpretResult run() {
                 push(value);
                 break;
             }
+
             case OP_DEFINE_GLOBAL: {
                 ObjString *name = READ_STRING();
                 tableSet(&vm.globals, name, peek(0));
                 pop();
                 break;
             }
+
             case OP_EQUAL: {
                 Value b = pop();
                 Value a = pop();

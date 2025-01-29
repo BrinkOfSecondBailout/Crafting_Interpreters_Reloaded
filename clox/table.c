@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -22,18 +23,36 @@ void freeTable(Table *table) {
 static Entry *findEntry(Entry *entries, int capacity, ObjString *key) {
     uint32_t index = key->hash % capacity;
     Entry *tombstone = NULL;
+
+    // printf("Searching for key: %s (hash: %u) at index: %d \n", key->chars, key->hash, index);
+
     for (;;) {
         Entry *entry = &entries[index];
+
+        // printf("Checking index %d: ", index);
+
+        // if (entry->key != NULL) {
+        //     printf("Found key '%s' (hash: %u)\n", entry->key->chars, entry->key->hash);
+        // }
+        // else if (!IS_NIL(entry->value)) {
+        //     printf("Tombstone detected\n");
+        // } else {
+        //     printf("Empty slot found\n");
+        // }
+
         if (entry->key == NULL) {
             // Emty entry
             if (IS_NIL(entry->value)) {
+                // printf("Returning: %s\n", tombstone ? "tombstone" : "empty slot");
                 return tombstone != NULL ? tombstone : entry;
             
             // Found a tombstone.
             } else {
-                if (tombstone == NULL) tombstone == entry;
+                if (tombstone == NULL) tombstone = entry;
+                // printf("Recording tombstone at index %d\n", index);
             }
-        } else if (entry->key == key) {
+        } else if (entry->key->hash == key->hash && strcmp(entry->key->chars, key->chars) == 0) {
+            // printf("Key match found at index %d\n", index);
             return entry;
         }
         index = (index + 1) % capacity;
@@ -44,7 +63,9 @@ bool tableGet(Table *table, ObjString *key, Value *value) {
     if (table->count == 0) return false;
 
     Entry *entry = findEntry(table->entries, table->capacity, key);
-    if (entry->key == NULL) return false;
+    if (entry->key == NULL) {
+        return false;
+    }
     *value = entry->value;
     return true;
 }
