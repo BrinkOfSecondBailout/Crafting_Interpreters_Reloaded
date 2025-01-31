@@ -1,4 +1,1 @@
-var breakfast = "beignets"; 
-var beverage = "cafe au lait"; 
-breakfast = "beignets with " + beverage; 
-print breakfast;
+print(1 + 1 == 2 and 2 + 2 == 6);
